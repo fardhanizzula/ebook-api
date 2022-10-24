@@ -16,7 +16,10 @@ class BookController extends Controller
     {
         $data = Book::all();
 
-        return $data;
+        return response()->json([
+            "message" => "Load Data Success",
+            "data" => $data
+        ], 200);
     }
 
     /**
@@ -38,7 +41,11 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $store = Book::create($request->all());
-        return $store;
+        
+        return response()->json([
+            "message" => "Add Data Success",
+            "data" => $store
+        ], 201);
     }
 
     /**
@@ -72,8 +79,12 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $update =Book::where ('id',$id)->update($request->all());
-        return $update;
+        $update = Book::where ('id',$id)->update($request->all());
+        
+        return response()->json([
+            "message" => "Update Data Success",
+            "data" => $update
+        ], 200);
     }
 
     /**
@@ -84,7 +95,12 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        $delete = Book::destroy($id);
-        return $delete;
+        $delete = Book::find($id);
+        if ($delete){
+            $delete->delete();
+            return["message" => "Delete Success"];
+        }else{
+            return["message" => "Data Not Found"];
+        }
     }
 }
